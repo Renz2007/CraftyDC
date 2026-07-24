@@ -81,5 +81,27 @@ client.on("interactionCreate", async (interaction) => {
         interaction.reply({ content: "Error executing command.", ephemeral: true });
     }
 });
+const axios = require('axios');
+
+module.exports = {
+  name: 'mc-players',
+  description: 'Show online players',
+  async execute(interaction) {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/v1/server/1/players`, {
+        headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+      });
+      const players = response.data.players;
+      if (players.length === 0) {
+        await interaction.reply('No players are currently online.');
+      } else {
+        await interaction.reply(`Online players: ${players.join(', ')}`);
+      }
+    } catch (error) {
+      console.error(error);
+      await interaction.reply('Failed to fetch player list.');
+    }
+  }
+};
 
 client.login(process.env.BOT_TOKEN);
