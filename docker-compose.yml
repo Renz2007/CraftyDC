@@ -2,14 +2,14 @@ version: "3.8"
 services:
   discord-deploy:
     image: renz2007/craftydc:latest
-    env_file: .env
+    env_file: stack.env
     command: ["node", "deploy.js"]
     restart: "no"
 
   discord-bot:
     image: renz2007/craftydc:latest
     container_name: discord-bot
-    env_file: .env
+    env_file: stack.env
     depends_on:
       - discord-deploy
     restart: unless-stopped
