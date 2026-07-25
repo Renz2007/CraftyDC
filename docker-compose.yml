@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  discord-deploy:
+    image: renz2007/craftydc:latest
+    env_file: .env
+    command: ["node", "deploy.js"]
+    restart: "no"
+
+  discord-bot:
+    image: renz2007/craftydc:latest
+    container_name: discord-bot
+    env_file: .env
+    depends_on:
+      - discord-deploy
+    restart: unless-stopped
+    command: ["node", "index.js"]
+    environment:
+      - CRAFTY_API_URL=https://192.168.1.80:8443
+      - CRAFTY_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3ODQ4OTU5MTcsInRva2VuX2lkIjoxfQ.k8-4sR0CE1v3wvwX_D3AU5AK3BUgLmT96ys-foHF4FY
